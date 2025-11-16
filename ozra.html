@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OzraOriginal – Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Montserrat', sans-serif; background: #FFFFFF; color: #3A3A3A; }
+
+  .lang-switch { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 20; }
+  .lang-btn { padding: 6px 14px; border-radius: 8px; border: none; cursor: pointer; background: #D4A373; color: #fff; font-weight: 600; }
+  .lang-btn:hover { background: #B88755; }
+
+  .menu-icon { position: fixed; top: 20px; left: 20px; font-size: 30px; cursor: pointer; z-index: 20; background: #D4A373; color: white; padding: 8px 14px; border-radius: 10px; }
+
+  .sidebar { position: fixed; left: -260px; top: 0; width: 260px; height: 100vh; background: #FAEDCD; box-shadow: 4px 0 20px rgba(0,0,0,0.2); padding: 60px 20px; transition: 0.35s; z-index: 30; overflow-y: auto; }
+  .sidebar.open { left: 0; }
+  .sidebar h3 { margin-bottom: 20px; }
+  .sidebar a { display: block; padding: 10px 0; text-decoration: none; color: #3A3A3A; font-size: 1.2em; font-weight: 600; cursor: pointer; }
+  .sidebar a:hover { color: #B88755; }
+
+  header { background: linear-gradient(135deg, #D4A373, #FAEDCD); padding: 120px 20px; text-align: center; }
+  header h1 { font-size: 3.5em; font-weight: 800; }
+  header p { max-width: 600px; margin: 20px auto; font-size: 1.3em; }
+  .cta-button { display: inline-block; margin-top: 30px; background: #D4A373; padding: 14px 35px; border-radius: 40px; color: #fff; font-weight: 600; text-decoration: none; transition: 0.3s; }
+  .cta-button:hover { background: #B88755; }
+
+  .scroll-row { display: flex; overflow-x: auto; gap: 20px; padding: 40px 20px; scroll-behavior: smooth; }
+  .scroll-row::-webkit-scrollbar { height: 8px; }
+  .scroll-row::-webkit-scrollbar-thumb { background: #D4A373; border-radius: 4px; }
+
+  .product { min-width: 250px; flex: 0 0 auto; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; transition: 0.3s; }
+  .product:hover { transform: translateY(-10px); }
+  .product img { width: 100%; display: block; }
+  .product h3 { padding: 10px; font-size: 1.2em; font-weight: 600; }
+  .product a { display: inline-block; margin: 0 0 15px; padding: 8px 18px; background: #D4A373; color: white; text-decoration: none; border-radius: 20px; }
+  .product a:hover { background: #B88755; }
+
+  .about { background: #FAEDCD; padding: 80px 20px; text-align: center; }
+  .about h2 { font-size: 2.5em; margin-bottom: 20px; }
+  .about p { max-width: 800px; margin: auto; font-size: 1.2em; line-height: 1.7; }
+  footer { background: #D4A373; color: white; padding: 25px; text-align: center; font-weight: 600; }
+  footer a { color: white; text-decoration: underline; margin: 0 8px; }
+</style>
+</head>
+<body>
+
+<div class="menu-icon" onclick="toggleMenu()">☰</div>
+<div class="sidebar" id="sidebar">
+  <h3 data-cs="Kategorie" data-en="Categories">Kategorie</h3>
+  <a onclick="showCategory('all')" data-cs="Vše" data-en="All">Vše</a>
+  <a onclick="showCategory('trika')" data-cs="Trika" data-en="T-shirts">Trika</a>
+  <a onclick="showCategory('mikiny')" data-cs="Mikiny" data-en="Hoodies">Mikiny</a>
+  <a onclick="showCategory('svetry')" data-cs="Svetry" data-en="Sweaters">Svetry</a>
+  <a onclick="showCategory('cepice')" data-cs="Čepice" data-en="Beanies">Čepice</a>
+</div>
+
+<div class="lang-switch">
+  <button class="lang-btn" onclick="setLang('cs')">CZ</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<header>
+  <h1 data-cs="OzraOriginal" data-en="OzraOriginal">OzraOriginal</h1>
+  <p data-cs="Originální produkty – oblečení, doplňky a design s duší." data-en="Original products – clothing, accessories and soulful design.">Originální produkty – oblečení, doplňky a design s duší.</p>
+  <a class="cta-button" href="https://ozraoriginal.etsy.com" target="_blank" data-cs="Navštívit obchod na Etsy" data-en="Visit Etsy Store">Navštívit obchod na Etsy</a>
+</header>
+
+<section class="scroll-row" id="productRow"></section>
+
+<section class="about">
+  <h2 data-cs="O značce OZRA" data-en="About OZRA">O značce OZRA</h2>
+  <p data-cs="OzraOriginal vytváří originální oblečení a doplňky s hravou i elegantní estetikou." data-en="OzraOriginal creates original clothing and accessories with playful yet elegant aesthetics.">OzraOriginal vytváří originální oblečení a doplňky s hravou i elegantní estetikou.</p>
+  <p data-cs="Kontakt" data-en="Contact">Kontakt: <a href="mailto:ozra.vibes@gmail.com">ozra.vibes@gmail.com</a></p>
+  <p data-cs="Sledujte nás" data-en="Follow us">
+    Sledujte nás: 
+    <a href="https://www.instagram.com/ozra.original.shop/#" target="_blank">Instagram</a> | 
+    <a href="https://www.tiktok.com/@ozra.original" target="_blank">TikTok</a> | 
+    <a href="https://www.facebook.com/profile.php?id=61583478391303" target="_blank">Facebook</a>
+  </p>
+</section>
+
+<footer>
+  © 2025 OzraOriginal | Email: <a href="mailto:ozra.vibes@gmail.com">ozra.vibes@gmail.com</a> |
+  <a href="https://www.instagram.com/ozra.original.shop/#" target="_blank">Instagram</a> |
+  <a href="https://www.tiktok.com/@ozra.original" target="_blank">TikTok</a> |
+  <a href="https://www.facebook.com/profile.php?id=61583478391303" target="_blank">Facebook</a>
+</footer>
+
+<script>
+const sidebar = document.getElementById('sidebar');
+function toggleMenu() { sidebar.classList.toggle('open'); }
+
+const allProducts = [
+  {category:'trika', name:'Chill Turtle Tričko', en:'Chill Turtle T-shirt', url:'https://www.etsy.com/listing/4404619939/chill-turtle-unisex-t-shirt-by-ozra', img:'https://i.etsystatic.com/62975037/r/il/aa9e47/7446695201/il_794xN.7446695201_c882.jpg'},
+  {category:'trika', name:'Flaming 67 Tričko', en:'Flaming 67 T-shirt', url:'https://www.etsy.com/listing/4405341099/flaming-67-t-shirt-by-ozra-original', img:'https://i.etsystatic.com/62975037/r/il/8e98d5/7399242958/il_794xN.7399242958_s554.jpg'},
+  {category:'trika', name:'404 Not Found Tričko', en:'404 Not Found T-shirt', url:'https://www.etsy.com/listing/4405787296/404-not-found-t-shirt-by-ozra-original', img:'https://i.etsystatic.com/62975037/r/il/153518/7401990658/il_794xN.7401990658_npwe.jpg'},
+  {category:'mikiny', name:'Deep Sleep Sloth Mikina', en:'Deep Sleep Sloth Hoodie', url:'https://www.etsy.com/listing/4404840954/deep-sleep-sloth-hoodie-by-ozra-original', img:'https://i.etsystatic.com/62975037/r/il/5bcb71/7398778608/il_794xN.7398778608_jj25.jpg'},
+  {category:'mikiny', name:'System Error Mikina', en:'System Error Hoodie', url:'https://www.etsy.com/listing/4405793329/system-error-hoodie-by-ozra-original', img:'https://i.etsystatic.com/62975037/r/il/26ac1c/7401963180/il_794xN.7401963180_24gq.jpg'},
+  {category:'svetry', name:'Chillmas Bear Svetr', en:'Chillmas Bear Sweater', url:'https://www.etsy.com/listing/4405835139/chillmas-bear-sweater-by-ozra-original', img:'https://i.etsystatic.com/62975037/r/il/07d47d/7402266844/il_794xN.7402266844_88bg.jpg'},
+  {category:'svetry', name:'Santa Face Ho Ho Ho Svetr', en:'Santa Face Ho Ho Ho Sweater', url:'https://www.etsy.com/listing/4405838000/santa-face-ho-ho-ho-sweatshirt-by-ozra', img:'https://i.etsystatic.com/62975037/r/il/ced2f2/7450255303/il_794xN.7450255303_dqib.jpg'},
+  {category:'cepice', name:'Vyšívaná čepice', en:'Embroidered Cuffed Beanie', url:'https://www.etsy.com/listing/4405230829/embroidered-cuffed-beanie-ozra-original', img:'https://i.etsystatic.com/62975037/r/il/8dd3ec/7398510294/il_794xN.7398510294_flci.jpg'}
+];
+
+const productRow = document.getElementById('productRow');
+function showCategory(cat) {
+  productRow.innerHTML = '';
+  const filtered = cat==='all' ? allProducts : allProducts.filter(p => p.category===cat);
+  filtered.forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'product';
+    div.setAttribute('data-category', p.category);
+    div.innerHTML = `<img src='${p.img}'><h3 data-cs='${p.name}' data-en='${p.en}'>${p.name}</h3><a href='${p.url}' target='_blank' data-cs='Detail na Etsy' data-en='View on Etsy'>Detail na Etsy</a>`;
+    productRow.appendChild(div);
+  });
+  sidebar.classList.remove('open');
+}
+showCategory('all');
+
+function setLang(lang) {
+  document.querySelectorAll('[data-cs]').forEach(el => { el.innerText = el.getAttribute('data-' + lang); });
+  localStorage.setItem('ozra_lang', lang);
+}
+(function(){ const saved = localStorage.getItem('ozra_lang'); setLang(saved ? saved : 'cs'); })();
+</script>
+</body>
+</html>
